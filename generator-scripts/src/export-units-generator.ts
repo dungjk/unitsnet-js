@@ -30,14 +30,16 @@ export function generateUnitsModuleExport(project: Project, unitsDestinationDire
         namedExports: [
             'ArithmeticOperation',
             'CompareOperation',
-            'OperatorOverrides',
             'setOperatorOverride',
             'unsetOperatorOverride',
             'unsetAllOperatorOverrides',
             'areAnyOperatorsOverridden',
-            'ToStringOptions',
         ]
     });
+
+    sourceFile.addStatements(
+        'export type { OperatorOverrides, ToStringOptions } from "./base-unit";',
+    );
 
     // Generate the export modules file.
     sourceFile.saveSync();

@@ -14,8 +14,10 @@ export enum MolarMassUnits {
     GramsPerMole = "GramPerMole",
     /** */
     KilogramsPerKilomole = "KilogramPerKilomole",
-    /** */
+    /** Pound mass per SI mole. This is distinct from PoundPerPoundMole, where the denominator is the pound-mole amount of substance unit. */
     PoundsPerMole = "PoundPerMole",
+    /** Pound mass per pound-mole. This is numerically equal to kilograms per kilomole and distinct from PoundPerMole, where the denominator is the SI mole. */
+    PoundsPerPoundMole = "PoundPerPoundMole",
     /** */
     NanogramsPerMole = "NanogramPerMole",
     /** */
@@ -44,6 +46,7 @@ export class MolarMass extends BaseUnit {
     private gramspermoleLazy: number | null = null;
     private kilogramsperkilomoleLazy: number | null = null;
     private poundspermoleLazy: number | null = null;
+    private poundsperpoundmoleLazy: number | null = null;
     private nanogramspermoleLazy: number | null = null;
     private microgramspermoleLazy: number | null = null;
     private milligramspermoleLazy: number | null = null;
@@ -99,12 +102,20 @@ export class MolarMass extends BaseUnit {
         return this.kilogramsperkilomoleLazy = this.convertFromBase(MolarMassUnits.KilogramsPerKilomole);
     }
 
-    /** */
+    /** Pound mass per SI mole. This is distinct from PoundPerPoundMole, where the denominator is the pound-mole amount of substance unit. */
     public get PoundsPerMole(): number {
         if(this.poundspermoleLazy !== null){
             return this.poundspermoleLazy;
         }
         return this.poundspermoleLazy = this.convertFromBase(MolarMassUnits.PoundsPerMole);
+    }
+
+    /** Pound mass per pound-mole. This is numerically equal to kilograms per kilomole and distinct from PoundPerMole, where the denominator is the SI mole. */
+    public get PoundsPerPoundMole(): number {
+        if(this.poundsperpoundmoleLazy !== null){
+            return this.poundsperpoundmoleLazy;
+        }
+        return this.poundsperpoundmoleLazy = this.convertFromBase(MolarMassUnits.PoundsPerPoundMole);
     }
 
     /** */
@@ -209,12 +220,22 @@ export class MolarMass extends BaseUnit {
 
     /**
      * Create a new MolarMass instance from a PoundsPerMole
-     *
+     * Pound mass per SI mole. This is distinct from PoundPerPoundMole, where the denominator is the pound-mole amount of substance unit.
      * @param value The unit as PoundsPerMole to create a new MolarMass from.
      * @returns The new MolarMass instance.
      */
     public static FromPoundsPerMole(value: number): MolarMass {
         return new MolarMass(value, MolarMassUnits.PoundsPerMole);
+    }
+
+    /**
+     * Create a new MolarMass instance from a PoundsPerPoundMole
+     * Pound mass per pound-mole. This is numerically equal to kilograms per kilomole and distinct from PoundPerMole, where the denominator is the SI mole.
+     * @param value The unit as PoundsPerPoundMole to create a new MolarMass from.
+     * @returns The new MolarMass instance.
+     */
+    public static FromPoundsPerPoundMole(value: number): MolarMass {
+        return new MolarMass(value, MolarMassUnits.PoundsPerPoundMole);
     }
 
     /**
@@ -362,6 +383,7 @@ export class MolarMass extends BaseUnit {
             case MolarMassUnits.GramsPerMole: return this.GramsPerMole;
             case MolarMassUnits.KilogramsPerKilomole: return this.KilogramsPerKilomole;
             case MolarMassUnits.PoundsPerMole: return this.PoundsPerMole;
+            case MolarMassUnits.PoundsPerPoundMole: return this.PoundsPerPoundMole;
             case MolarMassUnits.NanogramsPerMole: return this.NanogramsPerMole;
             case MolarMassUnits.MicrogramsPerMole: return this.MicrogramsPerMole;
             case MolarMassUnits.MilligramsPerMole: return this.MilligramsPerMole;
@@ -385,6 +407,7 @@ export class MolarMass extends BaseUnit {
                 case MolarMassUnits.GramsPerMole: return super.internalMultiply(this.value, 1e3);
                 case MolarMassUnits.KilogramsPerKilomole: return super.internalMultiply(this.value, 1e3);
                 case MolarMassUnits.PoundsPerMole: return super.internalDivide(this.value, 0.45359237);
+                case MolarMassUnits.PoundsPerPoundMole: return super.internalMultiply(this.value, 1e3);
                 case MolarMassUnits.NanogramsPerMole: {
                     const v3 = super.internalMultiply(this.value, 1e3);
                     return super.internalDivide(v3, 1e-9);
@@ -431,6 +454,7 @@ export class MolarMass extends BaseUnit {
             case MolarMassUnits.GramsPerMole: return this.value * 1e3;
             case MolarMassUnits.KilogramsPerKilomole: return this.value * 1e3;
             case MolarMassUnits.PoundsPerMole: return this.value / 0.45359237;
+            case MolarMassUnits.PoundsPerPoundMole: return this.value * 1e3;
             case MolarMassUnits.NanogramsPerMole: return (this.value * 1e3) / 1e-9;
             case MolarMassUnits.MicrogramsPerMole: return (this.value * 1e3) / 0.000001;
             case MolarMassUnits.MilligramsPerMole: return (this.value * 1e3) / 0.001;
@@ -451,6 +475,7 @@ export class MolarMass extends BaseUnit {
                 case MolarMassUnits.GramsPerMole: return super.internalDivide(value, 1e3);
                 case MolarMassUnits.KilogramsPerKilomole: return super.internalDivide(value, 1e3);
                 case MolarMassUnits.PoundsPerMole: return super.internalMultiply(value, 0.45359237);
+                case MolarMassUnits.PoundsPerPoundMole: return super.internalDivide(value, 1e3);
                 case MolarMassUnits.NanogramsPerMole: {
                     const v3 = super.internalDivide(value, 1e3);
                     return super.internalMultiply(v3, 1e-9);
@@ -497,6 +522,7 @@ export class MolarMass extends BaseUnit {
             case MolarMassUnits.GramsPerMole: return value / 1e3;
             case MolarMassUnits.KilogramsPerKilomole: return value / 1e3;
             case MolarMassUnits.PoundsPerMole: return value * 0.45359237;
+            case MolarMassUnits.PoundsPerPoundMole: return value / 1e3;
             case MolarMassUnits.NanogramsPerMole: return (value / 1e3) * 1e-9;
             case MolarMassUnits.MicrogramsPerMole: return (value / 1e3) * 0.000001;
             case MolarMassUnits.MilligramsPerMole: return (value / 1e3) * 0.001;
@@ -533,6 +559,8 @@ export class MolarMass extends BaseUnit {
                 return super.truncateFractionDigits(this.KilogramsPerKilomole, options as ToStringOptions) + ` kg/kmol`;
             case MolarMassUnits.PoundsPerMole:
                 return super.truncateFractionDigits(this.PoundsPerMole, options as ToStringOptions) + ` lb/mol`;
+            case MolarMassUnits.PoundsPerPoundMole:
+                return super.truncateFractionDigits(this.PoundsPerPoundMole, options as ToStringOptions) + ` lb/lbmol`;
             case MolarMassUnits.NanogramsPerMole:
                 return super.truncateFractionDigits(this.NanogramsPerMole, options as ToStringOptions) + ` ng/mol`;
             case MolarMassUnits.MicrogramsPerMole:
@@ -576,6 +604,8 @@ export class MolarMass extends BaseUnit {
                 return `kg/kmol`;
             case MolarMassUnits.PoundsPerMole:
                 return `lb/mol`;
+            case MolarMassUnits.PoundsPerPoundMole:
+                return `lb/lbmol`;
             case MolarMassUnits.NanogramsPerMole:
                 return `ng/mol`;
             case MolarMassUnits.MicrogramsPerMole:

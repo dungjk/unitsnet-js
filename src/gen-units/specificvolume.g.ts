@@ -12,18 +12,18 @@ export interface SpecificVolumeDto {
 export enum SpecificVolumeUnits {
     /** */
     CubicMetersPerKilogram = "CubicMeterPerKilogram",
+    /** A specific volume unit of cubic millimeters per kilogram. The millimeter prefix applies before cubing the length unit, so 1 mm³/kg = 1e-9 m³/kg. */
+    CubicMillimetersPerKilogram = "CubicMillimeterPerKilogram",
     /** */
-    CubicFeetPerPound = "CubicFootPerPound",
-    /** */
-    MillicubicMetersPerKilogram = "MillicubicMeterPerKilogram"
+    CubicFeetPerPound = "CubicFootPerPound"
 }
 
 /** In thermodynamics, the specific volume of a substance is the ratio of the substance's volume to its mass. It is the reciprocal of density and an intrinsic property of matter as well. */
 export class SpecificVolume extends BaseUnit {
     protected value: number;
     private cubicmetersperkilogramLazy: number | null = null;
+    private cubicmillimetersperkilogramLazy: number | null = null;
     private cubicfeetperpoundLazy: number | null = null;
-    private millicubicmetersperkilogramLazy: number | null = null;
 
     /**
      * Create a new SpecificVolume.
@@ -61,20 +61,20 @@ export class SpecificVolume extends BaseUnit {
         return this.cubicmetersperkilogramLazy = this.convertFromBase(SpecificVolumeUnits.CubicMetersPerKilogram);
     }
 
+    /** A specific volume unit of cubic millimeters per kilogram. The millimeter prefix applies before cubing the length unit, so 1 mm³/kg = 1e-9 m³/kg. */
+    public get CubicMillimetersPerKilogram(): number {
+        if(this.cubicmillimetersperkilogramLazy !== null){
+            return this.cubicmillimetersperkilogramLazy;
+        }
+        return this.cubicmillimetersperkilogramLazy = this.convertFromBase(SpecificVolumeUnits.CubicMillimetersPerKilogram);
+    }
+
     /** */
     public get CubicFeetPerPound(): number {
         if(this.cubicfeetperpoundLazy !== null){
             return this.cubicfeetperpoundLazy;
         }
         return this.cubicfeetperpoundLazy = this.convertFromBase(SpecificVolumeUnits.CubicFeetPerPound);
-    }
-
-    /** */
-    public get MillicubicMetersPerKilogram(): number {
-        if(this.millicubicmetersperkilogramLazy !== null){
-            return this.millicubicmetersperkilogramLazy;
-        }
-        return this.millicubicmetersperkilogramLazy = this.convertFromBase(SpecificVolumeUnits.MillicubicMetersPerKilogram);
     }
 
     /**
@@ -88,6 +88,16 @@ export class SpecificVolume extends BaseUnit {
     }
 
     /**
+     * Create a new SpecificVolume instance from a CubicMillimetersPerKilogram
+     * A specific volume unit of cubic millimeters per kilogram. The millimeter prefix applies before cubing the length unit, so 1 mm³/kg = 1e-9 m³/kg.
+     * @param value The unit as CubicMillimetersPerKilogram to create a new SpecificVolume from.
+     * @returns The new SpecificVolume instance.
+     */
+    public static FromCubicMillimetersPerKilogram(value: number): SpecificVolume {
+        return new SpecificVolume(value, SpecificVolumeUnits.CubicMillimetersPerKilogram);
+    }
+
+    /**
      * Create a new SpecificVolume instance from a CubicFeetPerPound
      *
      * @param value The unit as CubicFeetPerPound to create a new SpecificVolume from.
@@ -95,16 +105,6 @@ export class SpecificVolume extends BaseUnit {
      */
     public static FromCubicFeetPerPound(value: number): SpecificVolume {
         return new SpecificVolume(value, SpecificVolumeUnits.CubicFeetPerPound);
-    }
-
-    /**
-     * Create a new SpecificVolume instance from a MillicubicMetersPerKilogram
-     *
-     * @param value The unit as MillicubicMetersPerKilogram to create a new SpecificVolume from.
-     * @returns The new SpecificVolume instance.
-     */
-    public static FromMillicubicMetersPerKilogram(value: number): SpecificVolume {
-        return new SpecificVolume(value, SpecificVolumeUnits.MillicubicMetersPerKilogram);
     }
 
     /**
@@ -150,8 +150,8 @@ export class SpecificVolume extends BaseUnit {
     public convert(toUnit: SpecificVolumeUnits): number {
         switch (toUnit) {
             case SpecificVolumeUnits.CubicMetersPerKilogram: return this.CubicMetersPerKilogram;
+            case SpecificVolumeUnits.CubicMillimetersPerKilogram: return this.CubicMillimetersPerKilogram;
             case SpecificVolumeUnits.CubicFeetPerPound: return this.CubicFeetPerPound;
-            case SpecificVolumeUnits.MillicubicMetersPerKilogram: return this.MillicubicMetersPerKilogram;
 
             default:
                 break;
@@ -163,17 +163,17 @@ export class SpecificVolume extends BaseUnit {
         if (areAnyOperatorsOverridden())
             switch (toUnit) {
                 case SpecificVolumeUnits.CubicMetersPerKilogram: return this.value;
+                case SpecificVolumeUnits.CubicMillimetersPerKilogram: return super.internalMultiply(this.value, 1e9);
                 case SpecificVolumeUnits.CubicFeetPerPound: {
                     const v4 = super.internalDivide(0.45359237, 0.028316846592);
                     return super.internalMultiply(this.value, v4);
                 }
-                case SpecificVolumeUnits.MillicubicMetersPerKilogram: return super.internalDivide(this.value, 0.001);
                 default: return Number.NaN;
             }
         switch (toUnit) {
             case SpecificVolumeUnits.CubicMetersPerKilogram: return this.value;
+            case SpecificVolumeUnits.CubicMillimetersPerKilogram: return this.value * 1e9;
             case SpecificVolumeUnits.CubicFeetPerPound: return this.value * 0.45359237 / 0.028316846592;
-            case SpecificVolumeUnits.MillicubicMetersPerKilogram: return (this.value) / 0.001;
             default: return Number.NaN;
         }
     }
@@ -182,17 +182,17 @@ export class SpecificVolume extends BaseUnit {
         if (areAnyOperatorsOverridden())
             switch (fromUnit) {
                 case SpecificVolumeUnits.CubicMetersPerKilogram: return value;
+                case SpecificVolumeUnits.CubicMillimetersPerKilogram: return super.internalDivide(value, 1e9);
                 case SpecificVolumeUnits.CubicFeetPerPound: {
                     const v4 = super.internalDivide(0.028316846592, 0.45359237);
                     return super.internalMultiply(value, v4);
                 }
-                case SpecificVolumeUnits.MillicubicMetersPerKilogram: return super.internalMultiply(value, 0.001);
                 default: return Number.NaN;
             }
         switch (fromUnit) {
             case SpecificVolumeUnits.CubicMetersPerKilogram: return value;
+            case SpecificVolumeUnits.CubicMillimetersPerKilogram: return value / 1e9;
             case SpecificVolumeUnits.CubicFeetPerPound: return value * 0.028316846592 / 0.45359237;
-            case SpecificVolumeUnits.MillicubicMetersPerKilogram: return (value) * 0.001;
             default: return Number.NaN;
         }
     }
@@ -215,10 +215,10 @@ export class SpecificVolume extends BaseUnit {
             
             case SpecificVolumeUnits.CubicMetersPerKilogram:
                 return super.truncateFractionDigits(this.CubicMetersPerKilogram, options as ToStringOptions) + ` m³/kg`;
+            case SpecificVolumeUnits.CubicMillimetersPerKilogram:
+                return super.truncateFractionDigits(this.CubicMillimetersPerKilogram, options as ToStringOptions) + ` mm³/kg`;
             case SpecificVolumeUnits.CubicFeetPerPound:
                 return super.truncateFractionDigits(this.CubicFeetPerPound, options as ToStringOptions) + ` ft³/lb`;
-            case SpecificVolumeUnits.MillicubicMetersPerKilogram:
-                return super.truncateFractionDigits(this.MillicubicMetersPerKilogram, options as ToStringOptions) + ` mm³/kg`;
         default:
             break;
         }
@@ -238,10 +238,10 @@ export class SpecificVolume extends BaseUnit {
             
             case SpecificVolumeUnits.CubicMetersPerKilogram:
                 return `m³/kg`;
+            case SpecificVolumeUnits.CubicMillimetersPerKilogram:
+                return `mm³/kg`;
             case SpecificVolumeUnits.CubicFeetPerPound:
                 return `ft³/lb`;
-            case SpecificVolumeUnits.MillicubicMetersPerKilogram:
-                return `mm³/kg`;
         default:
             break;
         }

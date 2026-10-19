@@ -14,6 +14,8 @@ export enum VolumeUnits {
     Liters = "Liter",
     /** */
     CubicMeters = "CubicMeter",
+    /** A count-style volume unit equal to 1000 cubic meters. This is distinct from CubicKilometer, which is (1000 m)³ or 1e9 cubic meters. */
+    ThousandCubicMeters = "ThousandCubicMeter",
     /** */
     CubicKilometers = "CubicKilometer",
     /** */
@@ -32,6 +34,12 @@ export enum VolumeUnits {
     CubicYards = "CubicYard",
     /** The cubic foot (symbol ft3 or cu ft) is an imperial and US customary (non-metric) unit of volume, used in the United States and the United Kingdom. It is defined as the volume of a cube with sides of one foot (0.3048 m) in length. */
     CubicFeet = "CubicFoot",
+    /** A count-style volume unit equal to 100 cubic feet, commonly abbreviated Ccf in natural gas and water utility billing. */
+    HundredCubicFeet = "HundredCubicFoot",
+    /** A count-style volume unit equal to 1000 cubic feet, commonly abbreviated Mcf in natural gas reporting. */
+    ThousandCubicFeet = "ThousandCubicFoot",
+    /** A count-style volume unit equal to 1,000,000 cubic feet, commonly abbreviated MMcf in natural gas reporting. */
+    MillionCubicFeet = "MillionCubicFoot",
     /** The cubic inch (symbol in3) is a unit of volume in the Imperial units and United States customary units systems. It is the volume of a cube with each of its three dimensions (length, width, and height) being one inch long which is equivalent to 1/231 of a US gallon. */
     CubicInches = "CubicInch",
     /** The British imperial gallon (frequently called simply "gallon") is defined as exactly 4.54609 litres. */
@@ -97,16 +105,6 @@ export enum VolumeUnits {
     /** */
     Megaliters = "Megaliter",
     /** */
-    HectocubicMeters = "HectocubicMeter",
-    /** */
-    KilocubicMeters = "KilocubicMeter",
-    /** */
-    HectocubicFeet = "HectocubicFoot",
-    /** */
-    KilocubicFeet = "KilocubicFoot",
-    /** */
-    MegacubicFeet = "MegacubicFoot",
-    /** */
     KiloimperialGallons = "KiloimperialGallon",
     /** */
     MegaimperialGallons = "MegaimperialGallon",
@@ -127,6 +125,7 @@ export class Volume extends BaseUnit {
     protected value: number;
     private litersLazy: number | null = null;
     private cubicmetersLazy: number | null = null;
+    private thousandcubicmetersLazy: number | null = null;
     private cubickilometersLazy: number | null = null;
     private cubichectometersLazy: number | null = null;
     private cubicdecimetersLazy: number | null = null;
@@ -136,6 +135,9 @@ export class Volume extends BaseUnit {
     private cubicmilesLazy: number | null = null;
     private cubicyardsLazy: number | null = null;
     private cubicfeetLazy: number | null = null;
+    private hundredcubicfeetLazy: number | null = null;
+    private thousandcubicfeetLazy: number | null = null;
+    private millioncubicfeetLazy: number | null = null;
     private cubicinchesLazy: number | null = null;
     private imperialgallonsLazy: number | null = null;
     private imperialouncesLazy: number | null = null;
@@ -168,11 +170,6 @@ export class Volume extends BaseUnit {
     private hectolitersLazy: number | null = null;
     private kilolitersLazy: number | null = null;
     private megalitersLazy: number | null = null;
-    private hectocubicmetersLazy: number | null = null;
-    private kilocubicmetersLazy: number | null = null;
-    private hectocubicfeetLazy: number | null = null;
-    private kilocubicfeetLazy: number | null = null;
-    private megacubicfeetLazy: number | null = null;
     private kiloimperialgallonsLazy: number | null = null;
     private megaimperialgallonsLazy: number | null = null;
     private decausgallonsLazy: number | null = null;
@@ -223,6 +220,14 @@ export class Volume extends BaseUnit {
             return this.cubicmetersLazy;
         }
         return this.cubicmetersLazy = this.convertFromBase(VolumeUnits.CubicMeters);
+    }
+
+    /** A count-style volume unit equal to 1000 cubic meters. This is distinct from CubicKilometer, which is (1000 m)³ or 1e9 cubic meters. */
+    public get ThousandCubicMeters(): number {
+        if(this.thousandcubicmetersLazy !== null){
+            return this.thousandcubicmetersLazy;
+        }
+        return this.thousandcubicmetersLazy = this.convertFromBase(VolumeUnits.ThousandCubicMeters);
     }
 
     /** */
@@ -295,6 +300,30 @@ export class Volume extends BaseUnit {
             return this.cubicfeetLazy;
         }
         return this.cubicfeetLazy = this.convertFromBase(VolumeUnits.CubicFeet);
+    }
+
+    /** A count-style volume unit equal to 100 cubic feet, commonly abbreviated Ccf in natural gas and water utility billing. */
+    public get HundredCubicFeet(): number {
+        if(this.hundredcubicfeetLazy !== null){
+            return this.hundredcubicfeetLazy;
+        }
+        return this.hundredcubicfeetLazy = this.convertFromBase(VolumeUnits.HundredCubicFeet);
+    }
+
+    /** A count-style volume unit equal to 1000 cubic feet, commonly abbreviated Mcf in natural gas reporting. */
+    public get ThousandCubicFeet(): number {
+        if(this.thousandcubicfeetLazy !== null){
+            return this.thousandcubicfeetLazy;
+        }
+        return this.thousandcubicfeetLazy = this.convertFromBase(VolumeUnits.ThousandCubicFeet);
+    }
+
+    /** A count-style volume unit equal to 1,000,000 cubic feet, commonly abbreviated MMcf in natural gas reporting. */
+    public get MillionCubicFeet(): number {
+        if(this.millioncubicfeetLazy !== null){
+            return this.millioncubicfeetLazy;
+        }
+        return this.millioncubicfeetLazy = this.convertFromBase(VolumeUnits.MillionCubicFeet);
     }
 
     /** The cubic inch (symbol in3) is a unit of volume in the Imperial units and United States customary units systems. It is the volume of a cube with each of its three dimensions (length, width, and height) being one inch long which is equivalent to 1/231 of a US gallon. */
@@ -554,46 +583,6 @@ export class Volume extends BaseUnit {
     }
 
     /** */
-    public get HectocubicMeters(): number {
-        if(this.hectocubicmetersLazy !== null){
-            return this.hectocubicmetersLazy;
-        }
-        return this.hectocubicmetersLazy = this.convertFromBase(VolumeUnits.HectocubicMeters);
-    }
-
-    /** */
-    public get KilocubicMeters(): number {
-        if(this.kilocubicmetersLazy !== null){
-            return this.kilocubicmetersLazy;
-        }
-        return this.kilocubicmetersLazy = this.convertFromBase(VolumeUnits.KilocubicMeters);
-    }
-
-    /** */
-    public get HectocubicFeet(): number {
-        if(this.hectocubicfeetLazy !== null){
-            return this.hectocubicfeetLazy;
-        }
-        return this.hectocubicfeetLazy = this.convertFromBase(VolumeUnits.HectocubicFeet);
-    }
-
-    /** */
-    public get KilocubicFeet(): number {
-        if(this.kilocubicfeetLazy !== null){
-            return this.kilocubicfeetLazy;
-        }
-        return this.kilocubicfeetLazy = this.convertFromBase(VolumeUnits.KilocubicFeet);
-    }
-
-    /** */
-    public get MegacubicFeet(): number {
-        if(this.megacubicfeetLazy !== null){
-            return this.megacubicfeetLazy;
-        }
-        return this.megacubicfeetLazy = this.convertFromBase(VolumeUnits.MegacubicFeet);
-    }
-
-    /** */
     public get KiloimperialGallons(): number {
         if(this.kiloimperialgallonsLazy !== null){
             return this.kiloimperialgallonsLazy;
@@ -667,6 +656,16 @@ export class Volume extends BaseUnit {
      */
     public static FromCubicMeters(value: number): Volume {
         return new Volume(value, VolumeUnits.CubicMeters);
+    }
+
+    /**
+     * Create a new Volume instance from a ThousandCubicMeters
+     * A count-style volume unit equal to 1000 cubic meters. This is distinct from CubicKilometer, which is (1000 m)³ or 1e9 cubic meters.
+     * @param value The unit as ThousandCubicMeters to create a new Volume from.
+     * @returns The new Volume instance.
+     */
+    public static FromThousandCubicMeters(value: number): Volume {
+        return new Volume(value, VolumeUnits.ThousandCubicMeters);
     }
 
     /**
@@ -757,6 +756,36 @@ export class Volume extends BaseUnit {
      */
     public static FromCubicFeet(value: number): Volume {
         return new Volume(value, VolumeUnits.CubicFeet);
+    }
+
+    /**
+     * Create a new Volume instance from a HundredCubicFeet
+     * A count-style volume unit equal to 100 cubic feet, commonly abbreviated Ccf in natural gas and water utility billing.
+     * @param value The unit as HundredCubicFeet to create a new Volume from.
+     * @returns The new Volume instance.
+     */
+    public static FromHundredCubicFeet(value: number): Volume {
+        return new Volume(value, VolumeUnits.HundredCubicFeet);
+    }
+
+    /**
+     * Create a new Volume instance from a ThousandCubicFeet
+     * A count-style volume unit equal to 1000 cubic feet, commonly abbreviated Mcf in natural gas reporting.
+     * @param value The unit as ThousandCubicFeet to create a new Volume from.
+     * @returns The new Volume instance.
+     */
+    public static FromThousandCubicFeet(value: number): Volume {
+        return new Volume(value, VolumeUnits.ThousandCubicFeet);
+    }
+
+    /**
+     * Create a new Volume instance from a MillionCubicFeet
+     * A count-style volume unit equal to 1,000,000 cubic feet, commonly abbreviated MMcf in natural gas reporting.
+     * @param value The unit as MillionCubicFeet to create a new Volume from.
+     * @returns The new Volume instance.
+     */
+    public static FromMillionCubicFeet(value: number): Volume {
+        return new Volume(value, VolumeUnits.MillionCubicFeet);
     }
 
     /**
@@ -1080,56 +1109,6 @@ export class Volume extends BaseUnit {
     }
 
     /**
-     * Create a new Volume instance from a HectocubicMeters
-     *
-     * @param value The unit as HectocubicMeters to create a new Volume from.
-     * @returns The new Volume instance.
-     */
-    public static FromHectocubicMeters(value: number): Volume {
-        return new Volume(value, VolumeUnits.HectocubicMeters);
-    }
-
-    /**
-     * Create a new Volume instance from a KilocubicMeters
-     *
-     * @param value The unit as KilocubicMeters to create a new Volume from.
-     * @returns The new Volume instance.
-     */
-    public static FromKilocubicMeters(value: number): Volume {
-        return new Volume(value, VolumeUnits.KilocubicMeters);
-    }
-
-    /**
-     * Create a new Volume instance from a HectocubicFeet
-     *
-     * @param value The unit as HectocubicFeet to create a new Volume from.
-     * @returns The new Volume instance.
-     */
-    public static FromHectocubicFeet(value: number): Volume {
-        return new Volume(value, VolumeUnits.HectocubicFeet);
-    }
-
-    /**
-     * Create a new Volume instance from a KilocubicFeet
-     *
-     * @param value The unit as KilocubicFeet to create a new Volume from.
-     * @returns The new Volume instance.
-     */
-    public static FromKilocubicFeet(value: number): Volume {
-        return new Volume(value, VolumeUnits.KilocubicFeet);
-    }
-
-    /**
-     * Create a new Volume instance from a MegacubicFeet
-     *
-     * @param value The unit as MegacubicFeet to create a new Volume from.
-     * @returns The new Volume instance.
-     */
-    public static FromMegacubicFeet(value: number): Volume {
-        return new Volume(value, VolumeUnits.MegacubicFeet);
-    }
-
-    /**
      * Create a new Volume instance from a KiloimperialGallons
      *
      * @param value The unit as KiloimperialGallons to create a new Volume from.
@@ -1243,6 +1222,7 @@ export class Volume extends BaseUnit {
         switch (toUnit) {
             case VolumeUnits.Liters: return this.Liters;
             case VolumeUnits.CubicMeters: return this.CubicMeters;
+            case VolumeUnits.ThousandCubicMeters: return this.ThousandCubicMeters;
             case VolumeUnits.CubicKilometers: return this.CubicKilometers;
             case VolumeUnits.CubicHectometers: return this.CubicHectometers;
             case VolumeUnits.CubicDecimeters: return this.CubicDecimeters;
@@ -1252,6 +1232,9 @@ export class Volume extends BaseUnit {
             case VolumeUnits.CubicMiles: return this.CubicMiles;
             case VolumeUnits.CubicYards: return this.CubicYards;
             case VolumeUnits.CubicFeet: return this.CubicFeet;
+            case VolumeUnits.HundredCubicFeet: return this.HundredCubicFeet;
+            case VolumeUnits.ThousandCubicFeet: return this.ThousandCubicFeet;
+            case VolumeUnits.MillionCubicFeet: return this.MillionCubicFeet;
             case VolumeUnits.CubicInches: return this.CubicInches;
             case VolumeUnits.ImperialGallons: return this.ImperialGallons;
             case VolumeUnits.ImperialOunces: return this.ImperialOunces;
@@ -1284,11 +1267,6 @@ export class Volume extends BaseUnit {
             case VolumeUnits.Hectoliters: return this.Hectoliters;
             case VolumeUnits.Kiloliters: return this.Kiloliters;
             case VolumeUnits.Megaliters: return this.Megaliters;
-            case VolumeUnits.HectocubicMeters: return this.HectocubicMeters;
-            case VolumeUnits.KilocubicMeters: return this.KilocubicMeters;
-            case VolumeUnits.HectocubicFeet: return this.HectocubicFeet;
-            case VolumeUnits.KilocubicFeet: return this.KilocubicFeet;
-            case VolumeUnits.MegacubicFeet: return this.MegacubicFeet;
             case VolumeUnits.KiloimperialGallons: return this.KiloimperialGallons;
             case VolumeUnits.MegaimperialGallons: return this.MegaimperialGallons;
             case VolumeUnits.DecausGallons: return this.DecausGallons;
@@ -1308,6 +1286,7 @@ export class Volume extends BaseUnit {
             switch (toUnit) {
                 case VolumeUnits.Liters: return super.internalMultiply(this.value, 1e3);
                 case VolumeUnits.CubicMeters: return this.value;
+                case VolumeUnits.ThousandCubicMeters: return super.internalDivide(this.value, 1e3);
                 case VolumeUnits.CubicKilometers: return super.internalDivide(this.value, 1e9);
                 case VolumeUnits.CubicHectometers: return super.internalDivide(this.value, 1e6);
                 case VolumeUnits.CubicDecimeters: return super.internalMultiply(this.value, 1e3);
@@ -1317,6 +1296,18 @@ export class Volume extends BaseUnit {
                 case VolumeUnits.CubicMiles: return super.internalDivide(this.value, 4.168181825440579584e9);
                 case VolumeUnits.CubicYards: return super.internalDivide(this.value, 0.764554857984);
                 case VolumeUnits.CubicFeet: return super.internalDivide(this.value, 0.028316846592);
+                case VolumeUnits.HundredCubicFeet: {
+                    const v4 = super.internalMultiply(0.028316846592, 1e2);
+                    return super.internalDivide(this.value, v4);
+                }
+                case VolumeUnits.ThousandCubicFeet: {
+                    const v4 = super.internalMultiply(0.028316846592, 1e3);
+                    return super.internalDivide(this.value, v4);
+                }
+                case VolumeUnits.MillionCubicFeet: {
+                    const v4 = super.internalMultiply(0.028316846592, 1e6);
+                    return super.internalDivide(this.value, v4);
+                }
                 case VolumeUnits.CubicInches: return super.internalDivide(this.value, 1.6387064e-5);
                 case VolumeUnits.ImperialGallons: return super.internalDivide(this.value, 0.00454609);
                 case VolumeUnits.ImperialOunces: return super.internalDivide(this.value, 2.84130625e-5);
@@ -1379,20 +1370,6 @@ export class Volume extends BaseUnit {
                     const v3 = super.internalMultiply(this.value, 1e3);
                     return super.internalDivide(v3, 1000000);
                 }
-                case VolumeUnits.HectocubicMeters: return super.internalDivide(this.value, 100);
-                case VolumeUnits.KilocubicMeters: return super.internalDivide(this.value, 1000);
-                case VolumeUnits.HectocubicFeet: {
-                    const v3 = super.internalDivide(this.value, 0.028316846592);
-                    return super.internalDivide(v3, 100);
-                }
-                case VolumeUnits.KilocubicFeet: {
-                    const v3 = super.internalDivide(this.value, 0.028316846592);
-                    return super.internalDivide(v3, 1000);
-                }
-                case VolumeUnits.MegacubicFeet: {
-                    const v3 = super.internalDivide(this.value, 0.028316846592);
-                    return super.internalDivide(v3, 1000000);
-                }
                 case VolumeUnits.KiloimperialGallons: {
                     const v3 = super.internalDivide(this.value, 0.00454609);
                     return super.internalDivide(v3, 1000);
@@ -1426,6 +1403,7 @@ export class Volume extends BaseUnit {
         switch (toUnit) {
             case VolumeUnits.Liters: return this.value * 1e3;
             case VolumeUnits.CubicMeters: return this.value;
+            case VolumeUnits.ThousandCubicMeters: return this.value / 1e3;
             case VolumeUnits.CubicKilometers: return this.value / 1e9;
             case VolumeUnits.CubicHectometers: return this.value / 1e6;
             case VolumeUnits.CubicDecimeters: return this.value * 1e3;
@@ -1435,6 +1413,9 @@ export class Volume extends BaseUnit {
             case VolumeUnits.CubicMiles: return this.value / 4.168181825440579584e9;
             case VolumeUnits.CubicYards: return this.value / 0.764554857984;
             case VolumeUnits.CubicFeet: return this.value / 0.028316846592;
+            case VolumeUnits.HundredCubicFeet: return this.value / (0.028316846592 * 1e2);
+            case VolumeUnits.ThousandCubicFeet: return this.value / (0.028316846592 * 1e3);
+            case VolumeUnits.MillionCubicFeet: return this.value / (0.028316846592 * 1e6);
             case VolumeUnits.CubicInches: return this.value / 1.6387064e-5;
             case VolumeUnits.ImperialGallons: return this.value / 0.00454609;
             case VolumeUnits.ImperialOunces: return this.value / 2.84130625e-5;
@@ -1467,11 +1448,6 @@ export class Volume extends BaseUnit {
             case VolumeUnits.Hectoliters: return (this.value * 1e3) / 100;
             case VolumeUnits.Kiloliters: return (this.value * 1e3) / 1000;
             case VolumeUnits.Megaliters: return (this.value * 1e3) / 1000000;
-            case VolumeUnits.HectocubicMeters: return (this.value) / 100;
-            case VolumeUnits.KilocubicMeters: return (this.value) / 1000;
-            case VolumeUnits.HectocubicFeet: return (this.value / 0.028316846592) / 100;
-            case VolumeUnits.KilocubicFeet: return (this.value / 0.028316846592) / 1000;
-            case VolumeUnits.MegacubicFeet: return (this.value / 0.028316846592) / 1000000;
             case VolumeUnits.KiloimperialGallons: return (this.value / 0.00454609) / 1000;
             case VolumeUnits.MegaimperialGallons: return (this.value / 0.00454609) / 1000000;
             case VolumeUnits.DecausGallons: return (this.value / 0.003785411784) / 10;
@@ -1488,6 +1464,7 @@ export class Volume extends BaseUnit {
             switch (fromUnit) {
                 case VolumeUnits.Liters: return super.internalDivide(value, 1e3);
                 case VolumeUnits.CubicMeters: return value;
+                case VolumeUnits.ThousandCubicMeters: return super.internalMultiply(value, 1e3);
                 case VolumeUnits.CubicKilometers: return super.internalMultiply(value, 1e9);
                 case VolumeUnits.CubicHectometers: return super.internalMultiply(value, 1e6);
                 case VolumeUnits.CubicDecimeters: return super.internalDivide(value, 1e3);
@@ -1497,6 +1474,18 @@ export class Volume extends BaseUnit {
                 case VolumeUnits.CubicMiles: return super.internalMultiply(value, 4.168181825440579584e9);
                 case VolumeUnits.CubicYards: return super.internalMultiply(value, 0.764554857984);
                 case VolumeUnits.CubicFeet: return super.internalMultiply(value, 0.028316846592);
+                case VolumeUnits.HundredCubicFeet: {
+                    const v3 = super.internalMultiply(value, 0.028316846592);
+                    return super.internalMultiply(v3, 1e2);
+                }
+                case VolumeUnits.ThousandCubicFeet: {
+                    const v3 = super.internalMultiply(value, 0.028316846592);
+                    return super.internalMultiply(v3, 1e3);
+                }
+                case VolumeUnits.MillionCubicFeet: {
+                    const v3 = super.internalMultiply(value, 0.028316846592);
+                    return super.internalMultiply(v3, 1e6);
+                }
                 case VolumeUnits.CubicInches: return super.internalMultiply(value, 1.6387064e-5);
                 case VolumeUnits.ImperialGallons: return super.internalMultiply(value, 0.00454609);
                 case VolumeUnits.ImperialOunces: return super.internalMultiply(value, 2.84130625e-5);
@@ -1559,20 +1548,6 @@ export class Volume extends BaseUnit {
                     const v3 = super.internalDivide(value, 1e3);
                     return super.internalMultiply(v3, 1000000);
                 }
-                case VolumeUnits.HectocubicMeters: return super.internalMultiply(value, 100);
-                case VolumeUnits.KilocubicMeters: return super.internalMultiply(value, 1000);
-                case VolumeUnits.HectocubicFeet: {
-                    const v3 = super.internalMultiply(value, 0.028316846592);
-                    return super.internalMultiply(v3, 100);
-                }
-                case VolumeUnits.KilocubicFeet: {
-                    const v3 = super.internalMultiply(value, 0.028316846592);
-                    return super.internalMultiply(v3, 1000);
-                }
-                case VolumeUnits.MegacubicFeet: {
-                    const v3 = super.internalMultiply(value, 0.028316846592);
-                    return super.internalMultiply(v3, 1000000);
-                }
                 case VolumeUnits.KiloimperialGallons: {
                     const v3 = super.internalMultiply(value, 0.00454609);
                     return super.internalMultiply(v3, 1000);
@@ -1606,6 +1581,7 @@ export class Volume extends BaseUnit {
         switch (fromUnit) {
             case VolumeUnits.Liters: return value / 1e3;
             case VolumeUnits.CubicMeters: return value;
+            case VolumeUnits.ThousandCubicMeters: return value * 1e3;
             case VolumeUnits.CubicKilometers: return value * 1e9;
             case VolumeUnits.CubicHectometers: return value * 1e6;
             case VolumeUnits.CubicDecimeters: return value / 1e3;
@@ -1615,6 +1591,9 @@ export class Volume extends BaseUnit {
             case VolumeUnits.CubicMiles: return value * 4.168181825440579584e9;
             case VolumeUnits.CubicYards: return value * 0.764554857984;
             case VolumeUnits.CubicFeet: return value * 0.028316846592;
+            case VolumeUnits.HundredCubicFeet: return value * 0.028316846592 * 1e2;
+            case VolumeUnits.ThousandCubicFeet: return value * 0.028316846592 * 1e3;
+            case VolumeUnits.MillionCubicFeet: return value * 0.028316846592 * 1e6;
             case VolumeUnits.CubicInches: return value * 1.6387064e-5;
             case VolumeUnits.ImperialGallons: return value * 0.00454609;
             case VolumeUnits.ImperialOunces: return value * 2.84130625e-5;
@@ -1647,11 +1626,6 @@ export class Volume extends BaseUnit {
             case VolumeUnits.Hectoliters: return (value / 1e3) * 100;
             case VolumeUnits.Kiloliters: return (value / 1e3) * 1000;
             case VolumeUnits.Megaliters: return (value / 1e3) * 1000000;
-            case VolumeUnits.HectocubicMeters: return (value) * 100;
-            case VolumeUnits.KilocubicMeters: return (value) * 1000;
-            case VolumeUnits.HectocubicFeet: return (value * 0.028316846592) * 100;
-            case VolumeUnits.KilocubicFeet: return (value * 0.028316846592) * 1000;
-            case VolumeUnits.MegacubicFeet: return (value * 0.028316846592) * 1000000;
             case VolumeUnits.KiloimperialGallons: return (value * 0.00454609) * 1000;
             case VolumeUnits.MegaimperialGallons: return (value * 0.00454609) * 1000000;
             case VolumeUnits.DecausGallons: return (value * 0.003785411784) * 10;
@@ -1683,6 +1657,8 @@ export class Volume extends BaseUnit {
                 return super.truncateFractionDigits(this.Liters, options as ToStringOptions) + ` l`;
             case VolumeUnits.CubicMeters:
                 return super.truncateFractionDigits(this.CubicMeters, options as ToStringOptions) + ` m³`;
+            case VolumeUnits.ThousandCubicMeters:
+                return super.truncateFractionDigits(this.ThousandCubicMeters, options as ToStringOptions) + ` 10³·m³`;
             case VolumeUnits.CubicKilometers:
                 return super.truncateFractionDigits(this.CubicKilometers, options as ToStringOptions) + ` km³`;
             case VolumeUnits.CubicHectometers:
@@ -1701,6 +1677,12 @@ export class Volume extends BaseUnit {
                 return super.truncateFractionDigits(this.CubicYards, options as ToStringOptions) + ` yd³`;
             case VolumeUnits.CubicFeet:
                 return super.truncateFractionDigits(this.CubicFeet, options as ToStringOptions) + ` ft³`;
+            case VolumeUnits.HundredCubicFeet:
+                return super.truncateFractionDigits(this.HundredCubicFeet, options as ToStringOptions) + ` Ccf`;
+            case VolumeUnits.ThousandCubicFeet:
+                return super.truncateFractionDigits(this.ThousandCubicFeet, options as ToStringOptions) + ` Mcf`;
+            case VolumeUnits.MillionCubicFeet:
+                return super.truncateFractionDigits(this.MillionCubicFeet, options as ToStringOptions) + ` MMcf`;
             case VolumeUnits.CubicInches:
                 return super.truncateFractionDigits(this.CubicInches, options as ToStringOptions) + ` in³`;
             case VolumeUnits.ImperialGallons:
@@ -1765,16 +1747,6 @@ export class Volume extends BaseUnit {
                 return super.truncateFractionDigits(this.Kiloliters, options as ToStringOptions) + ` kl`;
             case VolumeUnits.Megaliters:
                 return super.truncateFractionDigits(this.Megaliters, options as ToStringOptions) + ` Ml`;
-            case VolumeUnits.HectocubicMeters:
-                return super.truncateFractionDigits(this.HectocubicMeters, options as ToStringOptions) + ` hm³`;
-            case VolumeUnits.KilocubicMeters:
-                return super.truncateFractionDigits(this.KilocubicMeters, options as ToStringOptions) + ` km³`;
-            case VolumeUnits.HectocubicFeet:
-                return super.truncateFractionDigits(this.HectocubicFeet, options as ToStringOptions) + ` hft³`;
-            case VolumeUnits.KilocubicFeet:
-                return super.truncateFractionDigits(this.KilocubicFeet, options as ToStringOptions) + ` kft³`;
-            case VolumeUnits.MegacubicFeet:
-                return super.truncateFractionDigits(this.MegacubicFeet, options as ToStringOptions) + ` Mft³`;
             case VolumeUnits.KiloimperialGallons:
                 return super.truncateFractionDigits(this.KiloimperialGallons, options as ToStringOptions) + ` kgal (imp.)`;
             case VolumeUnits.MegaimperialGallons:
@@ -1810,6 +1782,8 @@ export class Volume extends BaseUnit {
                 return `l`;
             case VolumeUnits.CubicMeters:
                 return `m³`;
+            case VolumeUnits.ThousandCubicMeters:
+                return `10³·m³`;
             case VolumeUnits.CubicKilometers:
                 return `km³`;
             case VolumeUnits.CubicHectometers:
@@ -1828,6 +1802,12 @@ export class Volume extends BaseUnit {
                 return `yd³`;
             case VolumeUnits.CubicFeet:
                 return `ft³`;
+            case VolumeUnits.HundredCubicFeet:
+                return `Ccf`;
+            case VolumeUnits.ThousandCubicFeet:
+                return `Mcf`;
+            case VolumeUnits.MillionCubicFeet:
+                return `MMcf`;
             case VolumeUnits.CubicInches:
                 return `in³`;
             case VolumeUnits.ImperialGallons:
@@ -1892,16 +1872,6 @@ export class Volume extends BaseUnit {
                 return `kl`;
             case VolumeUnits.Megaliters:
                 return `Ml`;
-            case VolumeUnits.HectocubicMeters:
-                return `hm³`;
-            case VolumeUnits.KilocubicMeters:
-                return `km³`;
-            case VolumeUnits.HectocubicFeet:
-                return `hft³`;
-            case VolumeUnits.KilocubicFeet:
-                return `kft³`;
-            case VolumeUnits.MegacubicFeet:
-                return `Mft³`;
             case VolumeUnits.KiloimperialGallons:
                 return `kgal (imp.)`;
             case VolumeUnits.MegaimperialGallons:

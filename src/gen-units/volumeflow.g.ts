@@ -21,7 +21,11 @@ export enum VolumeFlowUnits {
     /** */
     CubicFeetPerSecond = "CubicFootPerSecond",
     /** */
+    CubicInchesPerSecond = "CubicInchPerSecond",
+    /** */
     CubicFeetPerMinute = "CubicFootPerMinute",
+    /** */
+    CubicInchesPerMinute = "CubicInchPerMinute",
     /** */
     CubicFeetPerHour = "CubicFootPerHour",
     /** */
@@ -72,6 +76,8 @@ export enum VolumeFlowUnits {
     OilBarrelsPerSecond = "OilBarrelPerSecond",
     /** */
     CubicMillimetersPerSecond = "CubicMillimeterPerSecond",
+    /** */
+    CubicMillimetersPerMinute = "CubicMillimeterPerMinute",
     /** */
     AcreFeetPerSecond = "AcreFootPerSecond",
     /** */
@@ -170,7 +176,9 @@ export class VolumeFlow extends BaseUnit {
     private cubicmetersperhourLazy: number | null = null;
     private cubicmetersperdayLazy: number | null = null;
     private cubicfeetpersecondLazy: number | null = null;
+    private cubicinchespersecondLazy: number | null = null;
     private cubicfeetperminuteLazy: number | null = null;
+    private cubicinchesperminuteLazy: number | null = null;
     private cubicfeetperhourLazy: number | null = null;
     private cubicyardspersecondLazy: number | null = null;
     private cubicyardsperminuteLazy: number | null = null;
@@ -196,6 +204,7 @@ export class VolumeFlow extends BaseUnit {
     private oilbarrelsperhourLazy: number | null = null;
     private oilbarrelspersecondLazy: number | null = null;
     private cubicmillimeterspersecondLazy: number | null = null;
+    private cubicmillimetersperminuteLazy: number | null = null;
     private acrefeetpersecondLazy: number | null = null;
     private acrefeetperminuteLazy: number | null = null;
     private acrefeetperhourLazy: number | null = null;
@@ -310,11 +319,27 @@ export class VolumeFlow extends BaseUnit {
     }
 
     /** */
+    public get CubicInchesPerSecond(): number {
+        if(this.cubicinchespersecondLazy !== null){
+            return this.cubicinchespersecondLazy;
+        }
+        return this.cubicinchespersecondLazy = this.convertFromBase(VolumeFlowUnits.CubicInchesPerSecond);
+    }
+
+    /** */
     public get CubicFeetPerMinute(): number {
         if(this.cubicfeetperminuteLazy !== null){
             return this.cubicfeetperminuteLazy;
         }
         return this.cubicfeetperminuteLazy = this.convertFromBase(VolumeFlowUnits.CubicFeetPerMinute);
+    }
+
+    /** */
+    public get CubicInchesPerMinute(): number {
+        if(this.cubicinchesperminuteLazy !== null){
+            return this.cubicinchesperminuteLazy;
+        }
+        return this.cubicinchesperminuteLazy = this.convertFromBase(VolumeFlowUnits.CubicInchesPerMinute);
     }
 
     /** */
@@ -515,6 +540,14 @@ export class VolumeFlow extends BaseUnit {
             return this.cubicmillimeterspersecondLazy;
         }
         return this.cubicmillimeterspersecondLazy = this.convertFromBase(VolumeFlowUnits.CubicMillimetersPerSecond);
+    }
+
+    /** */
+    public get CubicMillimetersPerMinute(): number {
+        if(this.cubicmillimetersperminuteLazy !== null){
+            return this.cubicmillimetersperminuteLazy;
+        }
+        return this.cubicmillimetersperminuteLazy = this.convertFromBase(VolumeFlowUnits.CubicMillimetersPerMinute);
     }
 
     /** */
@@ -920,6 +953,16 @@ export class VolumeFlow extends BaseUnit {
     }
 
     /**
+     * Create a new VolumeFlow instance from a CubicInchesPerSecond
+     *
+     * @param value The unit as CubicInchesPerSecond to create a new VolumeFlow from.
+     * @returns The new VolumeFlow instance.
+     */
+    public static FromCubicInchesPerSecond(value: number): VolumeFlow {
+        return new VolumeFlow(value, VolumeFlowUnits.CubicInchesPerSecond);
+    }
+
+    /**
      * Create a new VolumeFlow instance from a CubicFeetPerMinute
      *
      * @param value The unit as CubicFeetPerMinute to create a new VolumeFlow from.
@@ -927,6 +970,16 @@ export class VolumeFlow extends BaseUnit {
      */
     public static FromCubicFeetPerMinute(value: number): VolumeFlow {
         return new VolumeFlow(value, VolumeFlowUnits.CubicFeetPerMinute);
+    }
+
+    /**
+     * Create a new VolumeFlow instance from a CubicInchesPerMinute
+     *
+     * @param value The unit as CubicInchesPerMinute to create a new VolumeFlow from.
+     * @returns The new VolumeFlow instance.
+     */
+    public static FromCubicInchesPerMinute(value: number): VolumeFlow {
+        return new VolumeFlow(value, VolumeFlowUnits.CubicInchesPerMinute);
     }
 
     /**
@@ -1177,6 +1230,16 @@ export class VolumeFlow extends BaseUnit {
      */
     public static FromCubicMillimetersPerSecond(value: number): VolumeFlow {
         return new VolumeFlow(value, VolumeFlowUnits.CubicMillimetersPerSecond);
+    }
+
+    /**
+     * Create a new VolumeFlow instance from a CubicMillimetersPerMinute
+     *
+     * @param value The unit as CubicMillimetersPerMinute to create a new VolumeFlow from.
+     * @returns The new VolumeFlow instance.
+     */
+    public static FromCubicMillimetersPerMinute(value: number): VolumeFlow {
+        return new VolumeFlow(value, VolumeFlowUnits.CubicMillimetersPerMinute);
     }
 
     /**
@@ -1666,7 +1729,9 @@ export class VolumeFlow extends BaseUnit {
             case VolumeFlowUnits.CubicMetersPerHour: return this.CubicMetersPerHour;
             case VolumeFlowUnits.CubicMetersPerDay: return this.CubicMetersPerDay;
             case VolumeFlowUnits.CubicFeetPerSecond: return this.CubicFeetPerSecond;
+            case VolumeFlowUnits.CubicInchesPerSecond: return this.CubicInchesPerSecond;
             case VolumeFlowUnits.CubicFeetPerMinute: return this.CubicFeetPerMinute;
+            case VolumeFlowUnits.CubicInchesPerMinute: return this.CubicInchesPerMinute;
             case VolumeFlowUnits.CubicFeetPerHour: return this.CubicFeetPerHour;
             case VolumeFlowUnits.CubicYardsPerSecond: return this.CubicYardsPerSecond;
             case VolumeFlowUnits.CubicYardsPerMinute: return this.CubicYardsPerMinute;
@@ -1692,6 +1757,7 @@ export class VolumeFlow extends BaseUnit {
             case VolumeFlowUnits.OilBarrelsPerHour: return this.OilBarrelsPerHour;
             case VolumeFlowUnits.OilBarrelsPerSecond: return this.OilBarrelsPerSecond;
             case VolumeFlowUnits.CubicMillimetersPerSecond: return this.CubicMillimetersPerSecond;
+            case VolumeFlowUnits.CubicMillimetersPerMinute: return this.CubicMillimetersPerMinute;
             case VolumeFlowUnits.AcreFeetPerSecond: return this.AcreFeetPerSecond;
             case VolumeFlowUnits.AcreFeetPerMinute: return this.AcreFeetPerMinute;
             case VolumeFlowUnits.AcreFeetPerHour: return this.AcreFeetPerHour;
@@ -1751,8 +1817,13 @@ export class VolumeFlow extends BaseUnit {
                 case VolumeFlowUnits.CubicMetersPerHour: return super.internalMultiply(this.value, 3600);
                 case VolumeFlowUnits.CubicMetersPerDay: return super.internalMultiply(this.value, 86400);
                 case VolumeFlowUnits.CubicFeetPerSecond: return super.internalDivide(this.value, 0.028316846592);
+                case VolumeFlowUnits.CubicInchesPerSecond: return super.internalDivide(this.value, 1.6387064e-5);
                 case VolumeFlowUnits.CubicFeetPerMinute: {
                     const v4 = super.internalDivide(0.028316846592, 60);
+                    return super.internalDivide(this.value, v4);
+                }
+                case VolumeFlowUnits.CubicInchesPerMinute: {
+                    const v4 = super.internalDivide(1.6387064e-5, 60);
                     return super.internalDivide(this.value, v4);
                 }
                 case VolumeFlowUnits.CubicFeetPerHour: {
@@ -1836,6 +1907,10 @@ export class VolumeFlow extends BaseUnit {
                 }
                 case VolumeFlowUnits.OilBarrelsPerSecond: return super.internalDivide(this.value, 0.158987294928);
                 case VolumeFlowUnits.CubicMillimetersPerSecond: return super.internalDivide(this.value, 1e-9);
+                case VolumeFlowUnits.CubicMillimetersPerMinute: {
+                    const v4 = super.internalDivide(1e-9, 60);
+                    return super.internalDivide(this.value, v4);
+                }
                 case VolumeFlowUnits.AcreFeetPerSecond: return super.internalDivide(this.value, 1233.48183754752);
                 case VolumeFlowUnits.AcreFeetPerMinute: {
                     const v4 = super.internalDivide(1233.48183754752, 60);
@@ -2046,7 +2121,9 @@ export class VolumeFlow extends BaseUnit {
             case VolumeFlowUnits.CubicMetersPerHour: return this.value * 3600;
             case VolumeFlowUnits.CubicMetersPerDay: return this.value * 86400;
             case VolumeFlowUnits.CubicFeetPerSecond: return this.value / 0.028316846592;
+            case VolumeFlowUnits.CubicInchesPerSecond: return this.value / 1.6387064e-5;
             case VolumeFlowUnits.CubicFeetPerMinute: return this.value / (0.028316846592 / 60);
+            case VolumeFlowUnits.CubicInchesPerMinute: return this.value / (1.6387064e-5 / 60);
             case VolumeFlowUnits.CubicFeetPerHour: return this.value / (0.028316846592 / 3600);
             case VolumeFlowUnits.CubicYardsPerSecond: return this.value / 0.764554857984;
             case VolumeFlowUnits.CubicYardsPerMinute: return this.value / (0.764554857984 / 60);
@@ -2072,6 +2149,7 @@ export class VolumeFlow extends BaseUnit {
             case VolumeFlowUnits.OilBarrelsPerHour: return this.value / (0.158987294928 / 3600);
             case VolumeFlowUnits.OilBarrelsPerSecond: return this.value / 0.158987294928;
             case VolumeFlowUnits.CubicMillimetersPerSecond: return this.value / 1e-9;
+            case VolumeFlowUnits.CubicMillimetersPerMinute: return this.value / (1e-9 / 60);
             case VolumeFlowUnits.AcreFeetPerSecond: return this.value / 1233.48183754752;
             case VolumeFlowUnits.AcreFeetPerMinute: return this.value / (1233.48183754752 / 60);
             case VolumeFlowUnits.AcreFeetPerHour: return this.value / (1233.48183754752 / 3600);
@@ -2128,8 +2206,13 @@ export class VolumeFlow extends BaseUnit {
                 case VolumeFlowUnits.CubicMetersPerHour: return super.internalDivide(value, 3600);
                 case VolumeFlowUnits.CubicMetersPerDay: return super.internalDivide(value, 86400);
                 case VolumeFlowUnits.CubicFeetPerSecond: return super.internalMultiply(value, 0.028316846592);
+                case VolumeFlowUnits.CubicInchesPerSecond: return super.internalMultiply(value, 1.6387064e-5);
                 case VolumeFlowUnits.CubicFeetPerMinute: {
                     const v4 = super.internalDivide(0.028316846592, 60);
+                    return super.internalMultiply(value, v4);
+                }
+                case VolumeFlowUnits.CubicInchesPerMinute: {
+                    const v4 = super.internalDivide(1.6387064e-5, 60);
                     return super.internalMultiply(value, v4);
                 }
                 case VolumeFlowUnits.CubicFeetPerHour: {
@@ -2213,6 +2296,10 @@ export class VolumeFlow extends BaseUnit {
                 }
                 case VolumeFlowUnits.OilBarrelsPerSecond: return super.internalMultiply(value, 0.158987294928);
                 case VolumeFlowUnits.CubicMillimetersPerSecond: return super.internalMultiply(value, 1e-9);
+                case VolumeFlowUnits.CubicMillimetersPerMinute: {
+                    const v4 = super.internalDivide(1e-9, 60);
+                    return super.internalMultiply(value, v4);
+                }
                 case VolumeFlowUnits.AcreFeetPerSecond: return super.internalMultiply(value, 1233.48183754752);
                 case VolumeFlowUnits.AcreFeetPerMinute: {
                     const v4 = super.internalDivide(1233.48183754752, 60);
@@ -2423,7 +2510,9 @@ export class VolumeFlow extends BaseUnit {
             case VolumeFlowUnits.CubicMetersPerHour: return value / 3600;
             case VolumeFlowUnits.CubicMetersPerDay: return value / 86400;
             case VolumeFlowUnits.CubicFeetPerSecond: return value * 0.028316846592;
+            case VolumeFlowUnits.CubicInchesPerSecond: return value * 1.6387064e-5;
             case VolumeFlowUnits.CubicFeetPerMinute: return value * 0.028316846592 / 60;
+            case VolumeFlowUnits.CubicInchesPerMinute: return value * 1.6387064e-5 / 60;
             case VolumeFlowUnits.CubicFeetPerHour: return value * 0.028316846592 / 3600;
             case VolumeFlowUnits.CubicYardsPerSecond: return value * 0.764554857984;
             case VolumeFlowUnits.CubicYardsPerMinute: return value * 0.764554857984 / 60;
@@ -2449,6 +2538,7 @@ export class VolumeFlow extends BaseUnit {
             case VolumeFlowUnits.OilBarrelsPerHour: return value * 0.158987294928 / 3600;
             case VolumeFlowUnits.OilBarrelsPerSecond: return value * 0.158987294928;
             case VolumeFlowUnits.CubicMillimetersPerSecond: return value * 1e-9;
+            case VolumeFlowUnits.CubicMillimetersPerMinute: return value * 1e-9 / 60;
             case VolumeFlowUnits.AcreFeetPerSecond: return value * 1233.48183754752;
             case VolumeFlowUnits.AcreFeetPerMinute: return value * 1233.48183754752 / 60;
             case VolumeFlowUnits.AcreFeetPerHour: return value * 1233.48183754752 / 3600;
@@ -2523,8 +2613,12 @@ export class VolumeFlow extends BaseUnit {
                 return super.truncateFractionDigits(this.CubicMetersPerDay, options as ToStringOptions) + ` m³/d`;
             case VolumeFlowUnits.CubicFeetPerSecond:
                 return super.truncateFractionDigits(this.CubicFeetPerSecond, options as ToStringOptions) + ` ft³/s`;
+            case VolumeFlowUnits.CubicInchesPerSecond:
+                return super.truncateFractionDigits(this.CubicInchesPerSecond, options as ToStringOptions) + ` in³/s`;
             case VolumeFlowUnits.CubicFeetPerMinute:
                 return super.truncateFractionDigits(this.CubicFeetPerMinute, options as ToStringOptions) + ` ft³/min`;
+            case VolumeFlowUnits.CubicInchesPerMinute:
+                return super.truncateFractionDigits(this.CubicInchesPerMinute, options as ToStringOptions) + ` in³/min`;
             case VolumeFlowUnits.CubicFeetPerHour:
                 return super.truncateFractionDigits(this.CubicFeetPerHour, options as ToStringOptions) + ` ft³/h`;
             case VolumeFlowUnits.CubicYardsPerSecond:
@@ -2575,6 +2669,8 @@ export class VolumeFlow extends BaseUnit {
                 return super.truncateFractionDigits(this.OilBarrelsPerSecond, options as ToStringOptions) + ` bbl/s`;
             case VolumeFlowUnits.CubicMillimetersPerSecond:
                 return super.truncateFractionDigits(this.CubicMillimetersPerSecond, options as ToStringOptions) + ` mm³/s`;
+            case VolumeFlowUnits.CubicMillimetersPerMinute:
+                return super.truncateFractionDigits(this.CubicMillimetersPerMinute, options as ToStringOptions) + ` mm³/min`;
             case VolumeFlowUnits.AcreFeetPerSecond:
                 return super.truncateFractionDigits(this.AcreFeetPerSecond, options as ToStringOptions) + ` af/s`;
             case VolumeFlowUnits.AcreFeetPerMinute:
@@ -2690,8 +2786,12 @@ export class VolumeFlow extends BaseUnit {
                 return `m³/d`;
             case VolumeFlowUnits.CubicFeetPerSecond:
                 return `ft³/s`;
+            case VolumeFlowUnits.CubicInchesPerSecond:
+                return `in³/s`;
             case VolumeFlowUnits.CubicFeetPerMinute:
                 return `ft³/min`;
+            case VolumeFlowUnits.CubicInchesPerMinute:
+                return `in³/min`;
             case VolumeFlowUnits.CubicFeetPerHour:
                 return `ft³/h`;
             case VolumeFlowUnits.CubicYardsPerSecond:
@@ -2742,6 +2842,8 @@ export class VolumeFlow extends BaseUnit {
                 return `bbl/s`;
             case VolumeFlowUnits.CubicMillimetersPerSecond:
                 return `mm³/s`;
+            case VolumeFlowUnits.CubicMillimetersPerMinute:
+                return `mm³/min`;
             case VolumeFlowUnits.AcreFeetPerSecond:
                 return `af/s`;
             case VolumeFlowUnits.AcreFeetPerMinute:
