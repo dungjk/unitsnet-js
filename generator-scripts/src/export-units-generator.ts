@@ -1,4 +1,4 @@
-import { Project, StructureKind } from 'ts-morph';
+import { ExportSpecifier, Project, StructureKind } from 'ts-morph';
 import { UnitTypeDefinition } from './models/units-definition';
 
 /**
@@ -34,12 +34,10 @@ export function generateUnitsModuleExport(project: Project, unitsDestinationDire
             'unsetOperatorOverride',
             'unsetAllOperatorOverrides',
             'areAnyOperatorsOverridden',
+            'type OperatorOverrides',
+            'type ToStringOptions'
         ]
     });
-
-    sourceFile.addStatements(
-        'export type { OperatorOverrides, ToStringOptions } from "./base-unit";',
-    );
 
     // Generate the export modules file.
     sourceFile.saveSync();
