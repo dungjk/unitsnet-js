@@ -228,9 +228,9 @@ function buildFormulaCase(unitName: string, enumName: string, formulaDefinition:
     // Unbrace variables and replace with references
     formulaDefinition = formulaDefinition.replace(/{x}|x/g, valueVarName)
 
-    return ts.createCaseClause(
-        ts.createPropertyAccess(ts.createIdentifier(enumName), unitName),
-        [ts.createReturn(ts.createIdentifier(formulaDefinition))]
+    return ts.factory.createCaseClause(
+        ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier(enumName), unitName),
+        [ts.factory.createReturnStatement(ts.factory.createIdentifier(formulaDefinition))]
     );
 }
 
@@ -257,7 +257,7 @@ function buildOverriddenFormulaCase(unitName: string, enumName: string, formulaD
     }
 
     if (ts.isExpressionStatement(lastStatement) && ts.isIdentifier(lastStatement.expression)) {
-        statements.push(ts.createReturn(resultIdentifier));
+        statements.push(ts.factory.createReturnStatement(resultIdentifier));
     } else {
         const returnStatement = HighLevelTsc.tryConvertToReturnStatement(lastStatement);
         if (!returnStatement) {
@@ -267,9 +267,9 @@ function buildOverriddenFormulaCase(unitName: string, enumName: string, formulaD
     }
 
 
-    return ts.createCaseClause(
-        ts.createPropertyAccess(ts.createIdentifier(enumName), unitName),
-        statements.length > 1 ? [ts.createBlock(statements)] : statements,
+    return ts.factory.createCaseClause(
+        ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier(enumName), unitName),
+        statements.length > 1 ? [ts.factory.createBlock(statements)] : statements,
     );
 }
 
@@ -311,17 +311,17 @@ function buildUnitConversionSwitchCase(
         )
     }
 
-    switchClauses.push(ts.createDefaultClause([
-        ts.createReturn(
-            ts.createPropertyAccess(
-                ts.createIdentifier('Number'),
+    switchClauses.push(ts.factory.createDefaultClause([
+        ts.factory.createReturnStatement(
+            ts.factory.createPropertyAccessExpression(
+                ts.factory.createIdentifier('Number'),
                 'NaN'
             )
         )
     ]));
 
 
-    return ts.createCaseBlock(switchClauses);
+    return ts.factory.createCaseBlock(switchClauses);
 }
 
 
@@ -510,20 +510,20 @@ function emitSplitFormulaFlow(
     isBaseToUnit: boolean,
     parameterName: string
 ): ts.Statement[] {
-    const ifCondition = ts.createCall(ts.createIdentifier('areAnyOperatorsOverridden'), undefined, undefined);
-    const switchOperand = ts.createIdentifier(parameterName);
+    const ifCondition = ts.factory.createCallExpression(ts.factory.createIdentifier('areAnyOperatorsOverridden'), undefined, undefined);
+    const switchOperand = ts.factory.createIdentifier(parameterName);
 
     return [
-        ts.createIf(
+        ts.factory.createIfStatement(
             ifCondition,
-            ts.createSwitch(
+            ts.factory.createSwitchStatement(
                 switchOperand,
                 buildOverriddenFormulaCases(enumName, units, isBaseToUnit)
             )
         ),
 
 
-        ts.createSwitch(
+        ts.factory.createSwitchStatement(
             switchOperand,
             buildStandardFormulaCases(enumName, units, isBaseToUnit)
         )

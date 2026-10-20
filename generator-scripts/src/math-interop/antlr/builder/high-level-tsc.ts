@@ -65,7 +65,7 @@ export namespace HighLevelTsc {
                 callExpressions.push(exprState.expression);
             } else {
                 preRequisiteCode.push(...resolved);
-                callExpressions.push(ts.createIdentifier(value.id));
+                callExpressions.push(ts.factory.createIdentifier(value.id));
             }
         }
 
@@ -155,10 +155,10 @@ export namespace HighLevelTsc {
      * @returns {ts.CallExpression} A TypeScript call expression representing the emitted self-invoking function
      */
     export function emitSelfInvokingFunction(funcExpression: ts.FunctionExpression, paramNames: string[]): ts.CallExpression {
-        return ts.createCall(
-            ts.createParen(funcExpression), // Wrap function expression in parentheses
+        return ts.factory.createCallExpression(
+            ts.factory.createParenthesizedExpression(funcExpression), // Wrap function expression in parentheses
             undefined, // No type arguments
-            paramNames?.map((paramName) => ts.createIdentifier(paramName)) ?? []
+            paramNames?.map((paramName) => ts.factory.createIdentifier(paramName)) ?? []
         );
     }
 
@@ -185,14 +185,14 @@ export namespace HighLevelTsc {
      * @return {ts.VariableStatement} A variable statement for the new constant
      */
     function createConstVariableStatement(name: string, initializer?: ts.Expression): ts.VariableStatement {
-        const declaration = ts.createVariableDeclaration(name, undefined, initializer);
-        const variableDeclarationList = ts.createVariableDeclarationList(
+        const declaration = ts.factory.createVariableDeclaration(name, undefined, undefined, initializer);
+        const variableDeclarationList = ts.factory.createVariableDeclarationList(
             [declaration],
             ts.NodeFlags.Const // Use NodeFlags.Const to create a const declaration
         );
 
         // Create the variable statement with const declaration
-        return ts.createVariableStatement(undefined, variableDeclarationList);
+        return ts.factory.createVariableStatement(undefined, variableDeclarationList);
     }
 
 
@@ -210,10 +210,10 @@ export namespace HighLevelTsc {
         ifStatements: ts.Statement[],
         elseStatements: ts.Statement[]
     ): ts.IfStatement {
-        return ts.createIf(
+        return ts.factory.createIfStatement(
             condition,
-            ts.createBlock([...ifStatements]),
-            ts.createBlock([...elseStatements]),
+            ts.factory.createBlock([...ifStatements]),
+            ts.factory.createBlock([...elseStatements]),
         );
     }
 
@@ -254,8 +254,8 @@ export namespace HighLevelTsc {
      */
     function getInternalMathOperationCall(operator: OperatorType, args: ts.Expression[]): ts.Expression {
         const methodName = getInternalOperatorImplName(operator);
-        const implAccess = ts.createPropertyAccess(ts.createSuper(), methodName);
-        return ts.createCall(implAccess, undefined, args);
+        const implAccess = ts.factory.createPropertyAccessExpression(ts.factory.createSuper(), methodName);
+        return ts.factory.createCallExpression(implAccess, undefined, args);
     }
 
     /**
@@ -265,7 +265,7 @@ export namespace HighLevelTsc {
      * @returns {ts.ExpressionStatement} A TypeScript Expression Statement representing a numeric literal
      */
     export function createNumericLiteralExpressionStatement(value: string): ts.ExpressionStatement {
-        return ts.createExpressionStatement(ts.createNumericLiteral(value));
+        return ts.factory.createExpressionStatement(ts.factory.createNumericLiteral(value));
     }
 
     /**
@@ -275,7 +275,7 @@ export namespace HighLevelTsc {
      * @returns {ts.ExpressionStatement} A TypeScript Expression Statement representing a literal
      */
     export function createLiteralExpressionStatement(value: string): ts.ExpressionStatement {
-        return ts.createExpressionStatement(ts.createLiteral(value));
+        return ts.factory.createExpressionStatement(ts.factory.createStringLiteral(value));
     }
 
     /**
@@ -337,18 +337,18 @@ export namespace HighLevelTsc {
             if (declarationList) {
                 for (const declaration of declarationList.declarations) {
                     if (ts.isVariableDeclaration(declaration) && declaration.initializer) {
-                        return ts.createReturn(declaration.initializer);
+                        return ts.factory.createReturnStatement(declaration.initializer);
                     }
                 }
             }
         }
 
         if (ts.isVariableDeclaration(statement) && statement.initializer) {
-            return ts.createReturn(statement.initializer);
+            return ts.factory.createReturnStatement(statement.initializer);
         }
 
         if (ts.isExpressionStatement(statement)) {
-            return ts.createReturn(statement.expression);
+            return ts.factory.createReturnStatement(statement.expression);
         }
 
         return undefined;

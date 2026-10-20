@@ -23,7 +23,7 @@ export class VariableNode extends BaseMathStringBuilderNode {
 
     public execute(): ts.Statement[] {
         const variableName = this._value.replace(/[\{\}]/igm, '');
-        const identifier = ts.createIdentifier(this._remapping?.[variableName] ?? variableName);
-        return [ts.createExpressionStatement(identifier)];
+        const identifier = ts.factory.createIdentifier(this._remapping?.[variableName] ?? variableName);
+        return [ts.factory.createExpressionStatement(identifier)];
     }
 }

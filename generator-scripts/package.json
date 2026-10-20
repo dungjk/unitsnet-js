@@ -21,7 +21,7 @@
     "antlr4ts-cli": "^0.5.0-alpha.4",
     "fs-extra": "^8.1.0",
     "ts-morph": "^6.0.3",
-    "typescript": "^3.9.7"
+    "typescript": "^5.9.2"
   },
   "dependencies": {
     "json5": "^2.2.3",
